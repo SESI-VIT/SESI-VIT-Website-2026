@@ -233,6 +233,8 @@ export default function ImagegalleryDomeGallery({ images = [] }: { images: any[]
           enablePan={false}
           rotateSpeed={0.5}
           reverseOrbit={true}
+          minPolarAngle={Math.PI / 2}
+          maxPolarAngle={Math.PI / 2}
         />
       </Canvas>
 

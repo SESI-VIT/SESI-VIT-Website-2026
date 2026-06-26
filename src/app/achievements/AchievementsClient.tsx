@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PillNav from "@/components/PillNav";
 import dynamic from "next/dynamic";
 const Background3D = dynamic(() => import("./AchievementsBackground3D"), { ssr: false });
@@ -8,7 +8,7 @@ import AchievementImageCard from "./AchievementsImageCard";
 import AchievementDescriptionCard from "./AchievementsDescriptionCard";
 import { SpotlightContainer } from "./AchievementsSpotlightCard";
 import Footer from "./AchievementsFooter";
-import { getImageUrl } from "@/sanity/lib/image";
+import { getImageUrl, getOptimizedImageUrl } from "@/sanity/lib/image";
 
 interface AchievementItem {
   title: string;
@@ -33,6 +33,15 @@ const navItems = [
 
 export default function AchievementsClient({ achievements }: AchievementsClientProps) {
   const [activeTab, setActiveTab] = useState("/achievements");
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
+
+  useEffect(() => {
+    if (achievements.length === 0) return;
+    const interval = setInterval(() => {
+      setHighlightedIndex((prev) => (prev + 1) % achievements.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [achievements.length]);
 
   return (
     <>
@@ -68,7 +77,9 @@ export default function AchievementsClient({ achievements }: AchievementsClientP
         <SpotlightContainer className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 grid grid-cols-1 gap-6">
           {achievements.map((item, index) => {
             const isEven = index % 2 === 1; // 0-based index: 0 is Odd Row (item 1), 1 is Even Row (item 2), etc.
-            const imageUrl = getImageUrl(item.imageSrc);
+            const imageUrl = getOptimizedImageUrl(item.imageSrc, 600, 600);
+
+            const isHighlighted = index === highlightedIndex;
 
             const imageCard = (
               <AchievementImageCard
@@ -76,6 +87,7 @@ export default function AchievementsClient({ achievements }: AchievementsClientP
                 title={item.title}
                 tag={item.tag}
                 index={index}
+                isHighlighted={isHighlighted}
               />
             );
 
@@ -85,6 +97,7 @@ export default function AchievementsClient({ achievements }: AchievementsClientP
                 tag={item.tag}
                 description={item.description}
                 index={index}
+                isHighlighted={isHighlighted}
               />
             );
 

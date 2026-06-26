@@ -9,6 +9,7 @@ interface AchievementDescriptionCardProps {
   description: string;
   index: number;
   highlights?: string[];
+  isHighlighted?: boolean;
 }
 
 export default function AchievementDescriptionCard({
@@ -18,9 +19,10 @@ export default function AchievementDescriptionCard({
   description,
   index,
   highlights = [],
+  isHighlighted = false,
 }: AchievementDescriptionCardProps) {
   return (
-    <SpotlightCard className="h-full w-full">
+    <SpotlightCard className={`h-full w-full ${isHighlighted ? "mobile-pulse-active" : "mobile-pulse-inactive"}`}>
       <div className="flex flex-col justify-center h-full space-y-6 p-6 md:p-8 lg:p-10">
         
         {/* Title, Date & Description Header block */}

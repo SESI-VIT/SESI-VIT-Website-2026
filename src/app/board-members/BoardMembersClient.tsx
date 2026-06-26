@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import BoardElectricBorder from "./BoardElectricBorder";
 import BoardFooter from "./BoardFooter";
 import PillNav from "@/components/PillNav";
-import { getImageUrl } from "@/sanity/lib/image";
+import { getImageUrl, getOptimizedImageUrl } from "@/sanity/lib/image";
 
 const BoardGalaxy = dynamic(() => import('./BoardGalaxy'), { ssr: false });
 const BoardSunCanvas = dynamic(() => import('./BoardSunCanvas'), { ssr: false });
@@ -40,7 +40,8 @@ export default function BoardMembersClient({ faculty, students }: BoardMembersCl
 
   // Map student board members to orbit image format
   const orbitImages = students.map((s) => ({
-    src: getImageUrl(s.avatar),
+    src: getOptimizedImageUrl(s.avatar, 200, 200),
+    hqSrc: getOptimizedImageUrl(s.avatar, 600, 600),
     link: s.link || ""
   }));
 
@@ -111,7 +112,7 @@ export default function BoardMembersClient({ faculty, students }: BoardMembersCl
               <div className="p-8 flex flex-col items-center text-center w-full h-full">
                 <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-yellow-500 mb-6 bg-gray-800">
                   <img
-                    src={getImageUrl(member.avatar)}
+                    src={getOptimizedImageUrl(member.avatar, 300, 300)}
                     alt={member.name}
                     className="w-full h-full object-cover"
                   />

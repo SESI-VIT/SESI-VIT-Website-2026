@@ -8,6 +8,7 @@ interface AchievementImageCardProps {
   title: string;
   tag: string;
   index: number;
+  isHighlighted?: boolean;
 }
 
 export default function AchievementImageCard({
@@ -15,9 +16,10 @@ export default function AchievementImageCard({
   title,
   tag,
   index,
+  isHighlighted = false,
 }: AchievementImageCardProps) {
   return (
-    <SpotlightCard className="h-full w-full">
+    <SpotlightCard className={`h-full w-full ${isHighlighted ? "mobile-pulse-active" : "mobile-pulse-inactive"}`}>
       <div className="relative w-full h-full min-h-[320px] md:min-h-[380px] rounded-[22px] overflow-hidden bg-zinc-950 border border-white/5">
         {/* Soft yellow ambient glow on card hover */}
         <div className="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 blur-2xl z-0" />

@@ -42,7 +42,7 @@ const organizationSchema = {
   "name": "SESI Student Chapter VIT Vellore",
   "alternateName": "Solar Energy Society of India Student Chapter VIT Vellore",
   "url": process.env.NEXT_PUBLIC_SITE_URL || "https://sesivit.org.in",
-  "logo": `${process.env.NEXT_PUBLIC_SITE_URL || "https://sesivit.org.in"}/favicon.ico`,
+  "logo": `${process.env.NEXT_PUBLIC_SITE_URL || "https://sesivit.org.in"}/icon.png`,
   "sameAs": [
     "https://www.instagram.com/sesi.vit/",
     "https://www.linkedin.com/company/sesi-vit/",

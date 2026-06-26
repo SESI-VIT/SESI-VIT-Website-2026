@@ -10,7 +10,7 @@ import {
 import dynamic from "next/dynamic";
 import PillNav from "@/components/PillNav";
 import SponsarFooter from "./sponsarFooter";
-import { getImageUrl } from "@/sanity/lib/image";
+import { getImageUrl, getOptimizedImageUrl } from "@/sanity/lib/image";
 
 const SponsarLightfall = dynamic(() => import("./sponsarLightfall"), {
   ssr: false,
@@ -94,7 +94,7 @@ export default function SponsorsClient({ ivSlides, faqs, achievements, sponsorPa
   // Hero Section data fallback
   const heroTitle = sponsorPageData?.heroTitle || "Building Connections Between Industry and Future Engineers";
   const heroDescription = sponsorPageData?.heroDescription || "Partner with VIT Vellore's premier community of engineering talent. We bridge the gap between academia and the renewable energy industry through high-impact technical initiatives.";
-  const heroImageSrc = sponsorPageData?.heroImage ? getImageUrl(sponsorPageData.heroImage) : "/sponsar-images/hero.jpg";
+  const heroImageSrc = sponsorPageData?.heroImage ? getOptimizedImageUrl(sponsorPageData.heroImage, 1200) : "/sponsar-images/hero.jpg";
 
   // Who We Are fallback
   const whoTitle = sponsorPageData?.whoTitle || "Who We Are";
@@ -103,7 +103,7 @@ export default function SponsorsClient({ ivSlides, faqs, achievements, sponsorPa
   
   const getWhoImage = (index: number, defaultSrc: string) => {
     if (sponsorPageData?.whoImages && sponsorPageData.whoImages[index]) {
-      return getImageUrl(sponsorPageData.whoImages[index]);
+      return getOptimizedImageUrl(sponsorPageData.whoImages[index], 500, 500);
     }
     return defaultSrc;
   };
@@ -168,7 +168,7 @@ export default function SponsorsClient({ ivSlides, faqs, achievements, sponsorPa
       return sponsorPageData.partnerships.map((item: any, i: number) => ({
         title: item.title || defaultPartnerships[i]?.title || "",
         desc: item.desc || defaultPartnerships[i]?.desc || "",
-        img: item.image ? getImageUrl(item.image) : defaultPartnerships[i]?.img
+        img: item.image ? getOptimizedImageUrl(item.image, 600, 400) : defaultPartnerships[i]?.img
       }));
     }
     return defaultPartnerships;
@@ -237,7 +237,7 @@ export default function SponsorsClient({ ivSlides, faqs, achievements, sponsorPa
   const getGallery = () => {
     if (sponsorPageData?.galleryImages && sponsorPageData.galleryImages.length > 0) {
       return sponsorPageData.galleryImages.map((img: any, i: number) => ({
-        img: getImageUrl(img),
+        img: getOptimizedImageUrl(img, 600),
         h: defaultGallery[i]?.h || "h-48 md:h-64"
       }));
     }
@@ -303,8 +303,8 @@ export default function SponsorsClient({ ivSlides, faqs, achievements, sponsorPa
         eventTitle: item.eventTitle || "",
         sponsorName: item.sponsorName || "",
         description: item.description || "",
-        eventImage: item.eventImage ? getImageUrl(item.eventImage) : "/sponsar-images/gallery-1.jpg",
-        sponsorLogo: item.sponsorLogo ? getImageUrl(item.sponsorLogo) : "/sponsar-images/partner-1.jpg",
+        eventImage: item.eventImage ? getOptimizedImageUrl(item.eventImage, 800, 450) : "/sponsar-images/gallery-1.jpg",
+        sponsorLogo: item.sponsorLogo ? getOptimizedImageUrl(item.sponsorLogo, 150, 150) : "/sponsar-images/partner-1.jpg",
       }));
     }
     return defaultSponsoredEvents;
@@ -583,7 +583,7 @@ export default function SponsorsClient({ ivSlides, faqs, achievements, sponsorPa
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {achievements.map((cert, i) => {
-              const imgUrl = getImageUrl(cert.imageSrc);
+              const imgUrl = getOptimizedImageUrl(cert.imageSrc, 800);
               // Deduce year from title
               const yearText = cert.title.includes('2024-25') || cert.title.includes('2024') 
                 ? '2024–2025' 
@@ -798,7 +798,7 @@ export default function SponsorsClient({ ivSlides, faqs, achievements, sponsorPa
                 <AnimatePresence initial={false}>
                   <motion.img
                     key={ivSlideIndex}
-                    src={getImageUrl(ivSlides[ivSlideIndex].image)}
+                    src={getOptimizedImageUrl(ivSlides[ivSlideIndex].image, 1000, 562)}
                     alt={`Industrial Visit to ${ivSlides[ivSlideIndex].name}`}
                     initial={{ opacity: 0, scale: 1.15 }}
                     animate={{ opacity: 1, scale: 1 }}

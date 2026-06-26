@@ -10,6 +10,7 @@ export default function HeroSequence() {
   const textOverlayRef = useRef<HTMLDivElement>(null);
   
   const [isMobile, setIsMobile] = useState(false);
+  const [firstFrameLoaded, setFirstFrameLoaded] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -44,24 +45,23 @@ export default function HeroSequence() {
     firstImg.onload = () => {
       imagesCache[1] = firstImg;
       drawImage(firstImg);
+      if (isMounted) {
+        setFirstFrameLoaded(true);
+      }
     };
-
-    // If on mobile, do not preload the 500+ other frames or listen to scroll
-    if (isMobile) {
-      return () => {
-        isMounted = false;
-      };
-    }
 
     // Preload remaining frames sequentially with limit to concurrency and cancellation support
     const preloadImages = () => {
-      let nextFrameToLoad = 2;
+      const step = isMobile ? 4 : 1;
+      let nextFrameToLoad = 1 + step;
       
       const loadNext = () => {
         if (!isMounted) return;
         if (nextFrameToLoad > FRAME_COUNT) return;
         
-        const currentFrameIndex = nextFrameToLoad++;
+        const currentFrameIndex = nextFrameToLoad;
+        nextFrameToLoad += step;
+        
         const img = new Image();
         img.src = currentFrame(currentFrameIndex);
         
@@ -74,8 +74,8 @@ export default function HeroSequence() {
         };
       };
 
-      // Limit concurrency to 4 parallel streams to avoid overloading the local dev server
-      const concurrencyLimit = 4;
+      // Limit concurrency to avoid overloading the browser on mobile
+      const concurrencyLimit = isMobile ? 2 : 4;
       for (let j = 0; j < concurrencyLimit; j++) {
         loadNext();
       }
@@ -111,10 +111,14 @@ export default function HeroSequence() {
       if (scrollFraction < 0) scrollFraction = 0;
       if (scrollFraction > 1) scrollFraction = 1;
       
-      const frameIndex = Math.min(
+      const step = isMobile ? 4 : 1;
+      const rawFrameIndex = Math.min(
         FRAME_COUNT,
         Math.max(1, Math.ceil(scrollFraction * FRAME_COUNT))
       );
+      // Snap to nearest step on mobile to reuse cached frames
+      const snappedIndex = Math.round(rawFrameIndex / step) * step;
+      const frameIndex = Math.max(1, Math.min(FRAME_COUNT, snappedIndex));
       
       let tOpacity = 1 - (scrollFraction / 0.3);
       if (tOpacity < 0) tOpacity = 0;
@@ -146,12 +150,21 @@ export default function HeroSequence() {
   }, [isMobile]);
 
   return (
-    <div className={isMobile ? "h-screen relative z-10 w-full" : "h-[500vh] relative z-10 w-full"} ref={wrapperRef} id="scroll-animation">
+    <div className={isMobile ? "h-[300vh] relative z-10 w-full" : "h-[500vh] relative z-10 w-full"} ref={wrapperRef} id="scroll-animation">
       <div className="h-screen w-full sticky top-0 flex justify-center items-center overflow-hidden bg-transparent relative">
+        {/* Fallback placeholder image while canvas loads */}
+        {!firstFrameLoaded && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src="/images/00001.jpg"
+            alt=""
+            className="absolute inset-0 z-0 w-full h-full object-cover"
+          />
+        )}
         <canvas 
           ref={canvasRef} 
           id="hero-lightpass" 
-          className="absolute inset-0 z-0 w-full h-full object-cover transition-opacity duration-75"
+          className="absolute inset-0 z-10 w-full h-full object-cover transition-opacity duration-75"
           style={{ opacity: 1 }}
         ></canvas>
         

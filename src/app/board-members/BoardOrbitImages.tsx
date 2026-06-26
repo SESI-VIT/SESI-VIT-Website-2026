@@ -72,6 +72,7 @@ function generateWavePath(cx: number, cy: number, w: number, amplitude: number, 
 
 interface OrbitItemProps {
   item: ReactNode;
+  hqItem?: ReactNode;
   index: number;
   totalItems: number;
   path: string;
@@ -88,7 +89,7 @@ interface OrbitItemProps {
   onPopoutStateChange?: (isPoppedOut: boolean) => void;
 }
 
-function BoardOrbitItem({ item, index, totalItems, path, itemSize, rotation, tilt, progress, fill, onHoverStart, onHoverEnd, isMobile, link, closeTrigger, onPopoutStateChange }: OrbitItemProps) {
+function BoardOrbitItem({ item, hqItem, index, totalItems, path, itemSize, rotation, tilt, progress, fill, onHoverStart, onHoverEnd, isMobile, link, closeTrigger, onPopoutStateChange }: OrbitItemProps) {
   const itemOffset = fill ? (index / totalItems) * 100 : 0;
 
   const distanceValue = useTransform(progress, (p) => {
@@ -264,7 +265,7 @@ function BoardOrbitItem({ item, index, totalItems, path, itemSize, rotation, til
             className="w-full h-full rounded-xl overflow-hidden border-4 border-yellow-400 shadow-[0_0_40px_rgba(255,204,0,0.8)] transition-transform hover:scale-105"
             style={{ transform: `rotate(${-rotation}deg) rotateX(${-tilt}deg)` }}
           >
-            {item}
+            {hqItem ?? item}
           </div>
         </motion.div>
       )}
@@ -274,6 +275,7 @@ function BoardOrbitItem({ item, index, totalItems, path, itemSize, rotation, til
 
 export interface OrbitImageItem {
   src: string;
+  hqSrc?: string;
   link?: string;
 }
 
@@ -481,6 +483,7 @@ export default function BoardOrbitImages({
 
             {images.map((img, index) => {
               const src = typeof img === 'string' ? img : img.src;
+              const hqSrc = typeof img === 'string' ? undefined : img.hqSrc;
               const link = typeof img === 'string' ? undefined : img.link;
               const itemElement = (
                 <img
@@ -491,10 +494,20 @@ export default function BoardOrbitImages({
                   className="orbit-image"
                 />
               );
+              const hqItemElement = hqSrc ? (
+                <img
+                  key={hqSrc}
+                  src={hqSrc}
+                  alt={`${altPrefix} ${index + 1}`}
+                  draggable={false}
+                  className="orbit-image"
+                />
+              ) : undefined;
               return (
                 <BoardOrbitItem
                   key={index}
                   item={itemElement}
+                  hqItem={hqItemElement}
                   index={index}
                   totalItems={images.length}
                   path={path}
@@ -552,10 +565,13 @@ export default function BoardOrbitImages({
               className="absolute inset-0 rounded-2xl overflow-hidden border-4 border-yellow-400 shadow-[0_0_40px_rgba(255,204,0,0.6)] z-50 transition-transform hover:scale-105"
             >
               <img
-                src={typeof images[activeIndex] === 'string' ? images[activeIndex] as string : (images[activeIndex] as OrbitImageItem).src}
+                src={typeof images[activeIndex] === 'string'
+                  ? images[activeIndex] as string
+                  : ((images[activeIndex] as OrbitImageItem).hqSrc ?? (images[activeIndex] as OrbitImageItem).src)}
                 alt={`${altPrefix} ${activeIndex + 1}`}
                 draggable={false}
                 className="orbit-image"
+                style={{ imageRendering: 'auto' }}
               />
             </motion.div>
           </AnimatePresence>

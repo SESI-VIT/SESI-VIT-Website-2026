@@ -15,7 +15,7 @@ import dynamic from "next/dynamic";
 const MagicRings = dynamic(() => import("./eventsMagicRings"), { ssr: false });
 import PillNav from "@/components/PillNav";
 import Footer from "./eventsFooter";
-import { getImageUrl } from "@/sanity/lib/image";
+import { getImageUrl, getOptimizedImageUrl } from "@/sanity/lib/image";
 
 export interface EventItem {
   title: string;
@@ -239,7 +239,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                             <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#0A0914]/95 backdrop-blur-3xl shadow-2xl h-[530px] md:h-[590px] flex flex-col justify-between">
                               <div className="w-full">
                                 <div className="relative w-full aspect-[4/3] overflow-hidden rounded-t-[2rem]">
-                                  <img src={getImageUrl(event.image)} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 duration-700 transition-all pointer-events-none" />
+                                  <img src={getOptimizedImageUrl(event.image, 600, 450)} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 duration-700 transition-all pointer-events-none" />
                                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0914] via-[#0A0914]/20 to-transparent" />
                                 </div>
 
@@ -298,7 +298,7 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                   {/* POSTER CONTEXT: Fits completely without cutting edges */}
                   <div className="relative w-full overflow-hidden bg-black/40 border-b border-white/5">
                     <img
-                      src={getImageUrl(selectedEvent.image)}
+                      src={getOptimizedImageUrl(selectedEvent.image, 1000)}
                       alt={selectedEvent.title}
                       className="w-full h-auto object-contain block max-h-[50vh] mx-auto"
                     />
