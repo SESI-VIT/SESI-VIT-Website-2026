@@ -333,21 +333,28 @@ export default function EventsClient({ initialEvents }: EventsClientProps) {
                       </div>
                     </div>
 
-                    {selectedEvent.category !== "Past" ? (
-                      <button 
-                        onClick={() => alert(`Redirecting to registration portal for ${selectedEvent.title}...`)} 
-                        className="w-full py-4 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-black tracking-widest text-xs uppercase shadow-xl hover:opacity-95 transition cursor-pointer"
-                      >
-                        Register For Event
-                      </button>
-                    ) : (
-                      <button 
-                        disabled 
-                        className="w-full py-4 rounded-xl bg-white/5 text-gray-500 font-bold border border-white/5 cursor-not-allowed text-xs tracking-widest uppercase"
-                      >
-                        Registration Closed
-                      </button>
-                    )}
+                    {(() => {
+                      const isEventPast = selectedEvent.category === "Past" || new Date() > new Date(selectedEvent.date);
+                      return !isEventPast ? (
+                        <a 
+                          href="https://vtop.vit.ac.in/vtop/open/page"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-4 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-black tracking-widest text-xs uppercase shadow-xl hover:opacity-95 transition cursor-pointer flex items-center justify-center"
+                        >
+                          Register For Event
+                        </a>
+                      ) : (
+                        <a 
+                          href="https://vtop.vit.ac.in/vtop/open/page"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-4 rounded-xl bg-white/5 text-gray-500 font-bold border border-white/5 cursor-not-allowed text-xs tracking-widest uppercase flex items-center justify-center"
+                        >
+                          Registration Closed
+                        </a>
+                      );
+                    })()}
                   </div>
                 </motion.div>
               </div>
