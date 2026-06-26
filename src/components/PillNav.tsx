@@ -205,6 +205,14 @@ export default function PillNav({
           </ul>
         </div>
 
+        {/* Sponsor Badge */}
+        <div className="sponsor-badge desktop-only flex items-center gap-2 pl-3 border-l border-[#111]/20 ml-2 mr-2">
+          <span className="text-[9px] uppercase font-extrabold text-[#111] tracking-widest opacity-60">Sponsor</span>
+          <Link href="/sponsors" className="px-3 py-1 bg-[#111] text-[#FACC15] text-[10px] uppercase font-extrabold rounded-full hover:scale-105 active:scale-95 transition-all shadow-sm cursor-pointer">
+            Hooba Boba
+          </Link>
+        </div>
+
         <button className="mobile-menu-button mobile-only" onClick={toggleMobileMenu} ref={hamburgerRef}>
           <span className="hamburger-line" />
           <span className="hamburger-line" />
@@ -240,6 +248,12 @@ export default function PillNav({
               </li>
             );
           })}
+          <li className="border-t border-[#FACC15]/20 pt-4 mt-2 flex flex-col items-center gap-2">
+            <span className="text-[9px] uppercase font-extrabold text-[#FACC15] tracking-widest opacity-60">Sponsored By</span>
+            <Link href="/sponsors" className="px-4 py-1.5 bg-[#FACC15] text-black text-[11px] uppercase font-extrabold rounded-full hover:scale-105 active:scale-95 transition-all shadow-md w-full text-center cursor-pointer">
+              Hooba Boba
+            </Link>
+          </li>
         </ul>
       </div>
     </div>
