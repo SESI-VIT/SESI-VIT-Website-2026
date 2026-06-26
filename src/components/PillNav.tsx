@@ -206,8 +206,11 @@ export default function PillNav({
         </div>
 
 
+        {/* Vertical Divider */}
+        <span className="h-4 w-[1px] bg-[#111]/20 ml-5 mr-5 desktop-only self-center" />
+
         {/* Sponsor Badge Inside Navbar */}
-        <div className="sponsor-badge-inside desktop-only select-none ml-5 mr-3 pl-5 border-l border-[#111]/20">
+        <div className="sponsor-badge-inside desktop-only select-none mr-3">
           <Link href="/sponsors" className="cursor-pointer">
             <span className="sponsor-label-text-inside">sponsor:</span>
             <span className="sponsor-brand-text-inside">Hooba Booba</span>
