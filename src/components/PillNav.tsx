@@ -206,16 +206,18 @@ export default function PillNav({
         </div>
 
 
-        {/* Vertical Divider */}
+        {/*
+        Vertical Divider
         <span className="h-4 w-[1px] bg-[#111]/20 ml-5 mr-5 desktop-only self-center" />
 
-        {/* Sponsor Badge Inside Navbar */}
+        Sponsor Badge Inside Navbar
         <div className="sponsor-badge-inside desktop-only select-none mr-3">
           <Link href="/sponsors" className="cursor-pointer">
             <span className="sponsor-label-text-inside">sponsor:</span>
             <span className="sponsor-brand-text-inside">Hooba Booba</span>
           </Link>
         </div>
+        */}
 
         <button className="mobile-menu-button mobile-only" onClick={toggleMobileMenu} ref={hamburgerRef}>
           <span className="hamburger-line" />
@@ -252,12 +254,14 @@ export default function PillNav({
               </li>
             );
           })}
+          {/*
           <li className="border-t border-[#FACC15]/20 pt-4 mt-2 flex justify-center select-none">
             <Link href="/sponsors" className="text-center w-full cursor-pointer">
               <span className="sponsor-label-text-mobile">sponsor:</span>
               <span className="sponsor-brand-text-mobile">Hooba Booba</span>
             </Link>
           </li>
+          */}
         </ul>
       </div>
     </div>

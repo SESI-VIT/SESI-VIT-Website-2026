@@ -2,7 +2,7 @@
    Premium Glassmorphic GSAP Liquid Pill Navbar Stylesheet
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@700;800&family=Space+Grotesk:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@700;800&display=swap');
 
 .pill-nav-container {
   display: flex;
@@ -234,49 +234,50 @@
 }
 
 .sponsor-label-text-inside {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 10px;
-  font-weight: 800;
+  font-family: 'Orbitron', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: #111 !important;
-  opacity: 0.6;
+  opacity: 0.7;
   transition: opacity 0.3s ease;
   margin-right: 6px;
 }
 
 .sponsor-brand-text-inside {
-  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: -0.01em;
+  font-family: 'Orbitron', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: #111 !important;
-  opacity: 0.95;
   transition: opacity 0.3s ease;
 }
 
 .sponsor-badge-inside a:hover .sponsor-brand-text-inside,
 .sponsor-badge-inside a:hover .sponsor-label-text-inside {
-  opacity: 0.45;
+  opacity: 0.5;
 }
 
 /* Mobile Sponsor Badge (Inside the dark popover menu) */
 .sponsor-label-text-mobile {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 10px;
-  font-weight: 800;
+  font-family: 'Orbitron', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(250, 204, 21, 0.6);
-  transition: color 0.3s ease, opacity 0.3s ease;
+  letter-spacing: 0.1em;
+  color: rgba(250, 204, 21, 0.7);
+  transition: color 0.3s ease;
   margin-right: 6px;
 }
 
 .sponsor-brand-text-mobile {
-  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: -0.01em;
+  font-family: 'Orbitron', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: #FACC15;
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
@@ -288,5 +289,4 @@
 
 .mobile-menu-list a:hover .sponsor-label-text-mobile {
   color: #FACC15;
-  opacity: 1;
 }
