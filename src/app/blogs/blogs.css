@@ -1418,3 +1418,57 @@
   background: rgba(168, 85, 247, 0.15);
   color: #c084fc;
 }
+
+/* Responsive adjustments for blog detail page to prevent image overlap */
+@media (max-width: 768px) {
+  .post-hero {
+    height: 380px !important;
+  }
+  
+  .post-hero-overlay {
+    padding: 32px 20px !important;
+  }
+  
+  .post-title {
+    font-size: 26px !important;
+    max-width: 80% !important;
+    line-height: 1.25 !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .post-cat-badge {
+    margin-bottom: 12px !important;
+  }
+
+  /* Specifically for graphic-based diagram blogs, stack the image on top and text at the bottom */
+  .post-hero.is-graphic {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+  }
+  
+  .post-hero.is-graphic .post-hero-img {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 10 !important;
+    object-fit: contain !important;
+  }
+  
+  .post-hero.is-graphic .post-hero-overlay {
+    position: relative !important;
+    background: transparent !important;
+    padding: 24px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+  }
+  
+  .post-hero.is-graphic .post-title {
+    font-size: 26px !important;
+    max-width: 100% !important;
+    line-height: 1.25 !important;
+    margin-bottom: 12px !important;
+  }
+}
+

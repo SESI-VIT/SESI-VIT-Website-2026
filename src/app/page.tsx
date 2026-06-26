@@ -115,12 +115,12 @@ export default function Home() {
                 <h4 className="font-headline-lg text-3xl md:text-4xl text-amber-400 font-extrabold mb-2 drop-shadow-md">Board Members</h4>
                 <p className="font-label-sm text-[14px] text-orange-500 font-bold uppercase tracking-widest drop-shadow-md">SESI VIT Chapter</p>
               </div>
-              <div className="glass-card rounded-[2.5rem] overflow-hidden shadow-2xl relative w-full h-[400px] md:h-[500px] min-h-[300px] group border border-white/10">
+              <div className="glass-card rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl relative w-full group border border-white/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/IMG_0349.JPG.jpeg"
                   alt="Board Members Group Photo"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-auto block transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
             </div>

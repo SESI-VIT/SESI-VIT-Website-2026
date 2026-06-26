@@ -8,23 +8,33 @@ import '../blogs.css'
 import { sanityFetch } from '@/sanity/lib/live'
 import { BLOGS_QUERY, SINGLE_BLOG_QUERY } from '@/sanity/lib/queries'
 import { getImageUrl } from '@/sanity/lib/image'
+import { client } from '@/sanity/lib/client'
+
+export const revalidate = 60
 
 export async function generateStaticParams() {
-  const { data: posts } = await sanityFetch({
-    query: BLOGS_QUERY,
-    perspective: 'published',
-    stega: false
-  }) as { data: any[] }
+  const posts = await client.fetch(
+    BLOGS_QUERY,
+    {},
+    {
+      perspective: 'published',
+      stega: false,
+      next: { revalidate: 60 }
+    }
+  ) as any[]
   return (posts || []).map((p: any) => ({ id: p._id }))
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const { data: post } = await sanityFetch({
-    query: SINGLE_BLOG_QUERY,
-    params: { id },
-    stega: false
-  }) as { data: any }
+  const post = await client.fetch(
+    SINGLE_BLOG_QUERY,
+    { id },
+    {
+      stega: false,
+      next: { revalidate: 60 }
+    }
+  ) as any
   if (!post) return { title: 'Post Not Found' }
   return {
     title: `${post.title} | SESI Blog`,
@@ -34,13 +44,22 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function BlogPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const { data: post } = await sanityFetch({
-    query: SINGLE_BLOG_QUERY,
-    params: { id }
-  }) as { data: any }
+  const post = await client.fetch(
+    SINGLE_BLOG_QUERY,
+    { id },
+    {
+      next: { revalidate: 60 }
+    }
+  ) as any
   if (!post) notFound()
 
-  const { data: allPosts } = await sanityFetch({ query: BLOGS_QUERY }) as { data: any[] }
+  const allPosts = await client.fetch(
+    BLOGS_QUERY,
+    {},
+    {
+      next: { revalidate: 60 }
+    }
+  ) as any[]
   const related = (allPosts || []).filter((p: any) => p._id !== post._id).slice(0, 3)
 
   const postImgUrl = getImageUrl(post.img)
@@ -121,7 +140,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
       <div className="post-page">
 
         {/* ── HERO IMAGE ── */}
-        <div className="post-hero" style={{ backgroundColor: heroBgColor }}>
+        <div className={`post-hero ${isGraphic ? 'is-graphic' : ''}`} style={{ backgroundColor: heroBgColor }}>
           <Image
             src={postImgUrl}
             alt={post.title}
