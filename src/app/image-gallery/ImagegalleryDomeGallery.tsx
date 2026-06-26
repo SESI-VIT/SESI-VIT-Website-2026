@@ -152,6 +152,25 @@ function CanvasLoader() {
   );
 }
 
+const getDomeImageUrl = (image: any, index: number) => {
+  let url = getImageUrl(image);
+  if (!url) {
+    const fallbacks = [
+      "/sponsar-images/who-workshop.jpg",
+      "/sponsar-images/who-event.jpg",
+      "/sponsar-images/who-team.jpg",
+      "/sponsar-images/who-industry.jpg"
+    ];
+    url = fallbacks[index % fallbacks.length];
+  }
+  // Append cache-busting parameter for WebGL CORS compatibility
+  if (url.includes('cdn.sanity.io') || url.startsWith('http')) {
+    const separator = url.includes('?') ? '&' : '?';
+    url = `${url}${separator}webgl-cors=1`;
+  }
+  return url;
+};
+
 export default function ImagegalleryDomeGallery({ images = [] }: { images: any[] }) {
   const [selectedImage, setSelectedImage] = useState<any | null>(null);
 
@@ -191,10 +210,10 @@ export default function ImagegalleryDomeGallery({ images = [] }: { images: any[]
         
         <Suspense fallback={null}>
           <RotatingGroup position={[0, 0, 0]}>
-            {clusterData.map((item) => (
+            {clusterData.map((item, idx) => (
               <DomeImage 
                 key={item.uniqueId} 
-                url={getImageUrl(item.image)} 
+                url={getDomeImageUrl(item.image, idx)} 
                 position={item.position} 
                 rotation={item.rotation}
                 onClick={() => setSelectedImage(item)}
@@ -233,7 +252,7 @@ export default function ImagegalleryDomeGallery({ images = [] }: { images: any[]
             >
               &times;
             </button>
-            <img src={getImageUrl(selectedImage.image)} alt={selectedImage.title} className="max-w-full max-h-[75vh] object-contain rounded-xl shadow-[0_10px_30px_rgba(252,163,17,0.2)] border border-[#fca311]/20" />
+            <img src={getImageUrl(selectedImage.image) || "/sponsar-images/who-workshop.jpg"} alt={selectedImage.title} className="max-w-full max-h-[75vh] object-contain rounded-xl shadow-[0_10px_30px_rgba(252,163,17,0.2)] border border-[#fca311]/20" />
             <div className="mt-[15px] text-center text-[#fca311]">
               <h3 className="m-0 mb-[5px] text-2xl font-bold text-[#fca311]">{selectedImage.title}</h3>
               <p className="m-0 text-base text-[#fca311]/80">{selectedImage.subtitle}</p>
