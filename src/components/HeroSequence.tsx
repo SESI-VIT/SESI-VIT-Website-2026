@@ -7,9 +7,16 @@ const currentFrame = (index: number) => `/images/${index.toString().padStart(5, 
 export default function HeroSequence() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [opacity, setOpacity] = useState(1);
-  const [textOpacity, setTextOpacity] = useState(1);
-  const [textTranslateY, setTextTranslateY] = useState(0);
+  const textOverlayRef = useRef<HTMLDivElement>(null);
+  
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -38,6 +45,13 @@ export default function HeroSequence() {
       imagesCache[1] = firstImg;
       drawImage(firstImg);
     };
+
+    // If on mobile, do not preload the 500+ other frames or listen to scroll
+    if (isMobile) {
+      return () => {
+        isMounted = false;
+      };
+    }
 
     // Preload remaining frames sequentially with limit to concurrency and cancellation support
     const preloadImages = () => {
@@ -105,13 +119,20 @@ export default function HeroSequence() {
       let tOpacity = 1 - (scrollFraction / 0.3);
       if (tOpacity < 0) tOpacity = 0;
       if (tOpacity > 1) tOpacity = 1;
-      setTextOpacity(tOpacity);
-      setTextTranslateY((1 - tOpacity) * -50);
       
+      let canvasOpacity = 1;
       if (scrollFraction > 0.80) {
-        setOpacity(Math.max(0, 1 - ((scrollFraction - 0.80) / 0.20)));
-      } else {
-        setOpacity(1);
+        canvasOpacity = Math.max(0, 1 - ((scrollFraction - 0.80) / 0.20));
+      }
+
+      // Direct DOM style manipulation for extreme scroll performance (no React state updates)
+      if (textOverlayRef.current) {
+        textOverlayRef.current.style.opacity = String(tOpacity);
+        textOverlayRef.current.style.transform = `translateY(${(1 - tOpacity) * -50}px)`;
+      }
+
+      if (canvasRef.current) {
+        canvasRef.current.style.opacity = String(canvasOpacity);
       }
       
       requestAnimationFrame(() => updateImage(frameIndex));
@@ -122,22 +143,23 @@ export default function HeroSequence() {
       isMounted = false;
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
-    <div className="h-[500vh] relative z-10 w-full" ref={wrapperRef} id="scroll-animation">
+    <div className={isMobile ? "h-screen relative z-10 w-full" : "h-[500vh] relative z-10 w-full"} ref={wrapperRef} id="scroll-animation">
       <div className="h-screen w-full sticky top-0 flex justify-center items-center overflow-hidden bg-transparent relative">
         <canvas 
           ref={canvasRef} 
           id="hero-lightpass" 
           className="absolute inset-0 z-0 w-full h-full object-cover transition-opacity duration-75"
-          style={{ opacity }}
+          style={{ opacity: 1 }}
         ></canvas>
         
         <div 
+          ref={textOverlayRef}
           id="animation-text-overlay" 
           className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none text-center px-4 md:px-8 transition-opacity duration-75"
-          style={{ opacity: textOpacity, transform: `translateY(${textTranslateY}px)` }}
+          style={{ opacity: 1 }}
         >
           <h1 className="font-display-lg text-5xl md:text-display-lg font-extrabold leading-tight mb-2 transition-opacity duration-75 flex flex-col items-center text-center">
               <span className="bg-gradient-to-r from-white via-amber-400 to-orange-500 bg-clip-text text-transparent drop-shadow-[0_5px_20px_rgba(0,0,0,1)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)] pb-1">Solar Energy Society of India</span>

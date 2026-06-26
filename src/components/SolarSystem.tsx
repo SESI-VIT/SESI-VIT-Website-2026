@@ -34,11 +34,11 @@ function Planet({ data }: { data: any }) {
 
   return (
     <group ref={groupRef}>
-      <Sphere ref={meshRef} args={[data.size, 64, 64]} position={[data.distance, 0, 0]}>
+      <Sphere ref={meshRef} args={[data.size, 32, 32]} position={[data.distance, 0, 0]}>
         <meshStandardMaterial 
           map={map} 
           transparent={true} 
-          emissive={data.name === 'Sun' ? new THREE.Color(0xffffee) : new THREE.Color(0x000000)}
+          emissive={data.name === 'Sun' ? '#ffffee' : '#000000'}
           emissiveMap={data.name === 'Sun' ? map : undefined}
           emissiveIntensity={data.name === 'Sun' ? 1 : 0}
           roughness={data.name === 'Sun' ? 1 : 0.5}
@@ -81,7 +81,7 @@ function SolarSystemScene() {
     <>
       <ambientLight intensity={0.4} />
       <pointLight intensity={3} distance={300} color={0xffffff} />
-      <Stars radius={100} depth={50} count={7000} factor={4} saturation={0} fade speed={1} />
+      <Stars radius={100} depth={50} count={2000} factor={4} saturation={0} fade speed={1} />
       {planetData.map((planet) => (
         <Planet key={planet.name} data={planet} />
       ))}
