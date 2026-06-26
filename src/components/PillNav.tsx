@@ -205,9 +205,10 @@ export default function PillNav({
           </ul>
         </div>
 
-        {/* Sponsor Badge */}
-        <div className="sponsor-badge desktop-only self-stretch flex items-center bg-[#111] ml-4 -mt-[6px] -mb-[6px] -mr-[6px] pl-5 pr-6 rounded-r-full select-none">
-          <Link href="/sponsors" className="text-[11px] font-black text-[#FACC15] hover:text-[#FACC15]/80 transition-colors cursor-pointer">
+
+        {/* Floating Sponsor Badge */}
+        <div className="sponsor-badge-floating desktop-only select-none">
+          <Link href="/sponsors" className="text-[12px] font-extrabold text-[#FACC15] hover:text-[#FACC15]/80 transition-colors cursor-pointer tracking-wider">
             sponsor: Hooba Booba
           </Link>
         </div>
@@ -247,8 +248,8 @@ export default function PillNav({
               </li>
             );
           })}
-          <li className="border-t border-[#FACC15]/20 pt-4 mt-2 flex justify-center">
-            <Link href="/sponsors" className="px-4 py-2 bg-[#111] text-[#FACC15] text-[11px] font-black rounded-full w-full text-center cursor-pointer">
+          <li className="border-t border-[#FACC15]/20 pt-4 mt-2 flex justify-center select-none">
+            <Link href="/sponsors" className="text-[#FACC15] text-[12px] font-extrabold hover:text-[#FACC15]/80 transition-colors tracking-wider text-center w-full cursor-pointer">
               sponsor: Hooba Booba
             </Link>
           </li>

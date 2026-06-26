@@ -16,6 +16,7 @@
 
 /* Main Translucent Capsule Body Frame */
 .pill-nav {
+  position: relative;
   display: flex;
   align-items: center;
   background-color: #FACC15 !important;
@@ -221,20 +222,15 @@
 /* ==========================================
    Sponsor Badge Premium Styling
    ========================================== */
-@keyframes sponsor-shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+.sponsor-badge-floating {
+  position: absolute;
+  left: calc(100% + 24px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
 }
 
-.animate-sponsor-shimmer {
-  animation: sponsor-shimmer 2.5s infinite ease-in-out;
-}
-
-.sponsor-glow:hover {
-  box-shadow: 0 0 20px rgba(250, 204, 21, 0.6), inset 0 0 8px rgba(250, 204, 21, 0.2);
-  border-color: rgba(250, 204, 21, 0.4);
+.sponsor-badge-floating a {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  text-decoration: none;
 }
